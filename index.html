@@ -33,6 +33,7 @@
                         <div class="field half">
                             <label for="university-name">University Name</label>
                             <input type="text" name="university-name" id="university-name" required />
+                            <button type="button" id="search-university">Search</button>
                         </div>
                         <div class="field half">
                             <label for="grades">Grades</label>
@@ -47,6 +48,7 @@
                         <li><input type="submit" value="Add University" class="primary" /></li>
                     </ul>
                 </form>
+                <div id="university-info"></div>
             </div>
         </section>
 
@@ -110,6 +112,31 @@
             if (event.target.classList.contains('remove-button')) {
                 event.target.closest('tr').remove();
             }
+        });
+
+        document.getElementById('search-university').addEventListener('click', function() {
+            const universityName = document.getElementById('university-name').value;
+            fetch(`http://universities.hipolabs.com/search?name=${universityName}`)
+                .then(response => response.json())
+                .then(data => {
+                    const universityInfoDiv = document.getElementById('university-info');
+                    universityInfoDiv.innerHTML = '';
+
+                    if (data.length > 0) {
+                        const university = data[0];
+                        universityInfoDiv.innerHTML = `
+                            <h3>${university.name}</h3>
+                            <p>Country: ${university.country}</p>
+                            <p>Website: <a href="${university.web_pages[0]}" target="_blank">${university.web_pages[0]}</a></p>
+                        `;
+                    } else {
+                        universityInfoDiv.innerHTML = '<p>No university found.</p>';
+                    }
+                })
+                .catch(error => {
+                    console.error('Error fetching university data:', error);
+                    document.getElementById('university-info').innerHTML = '<p>Error fetching university data.</p>';
+                });
         });
     </script>
 </body>
