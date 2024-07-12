@@ -1,19 +1,20 @@
 <!DOCTYPE HTML>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>University Selector</title>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
-    <meta name="description" content="University Selector" />
-    <meta name="keywords" content="university, selector, grades, entry requirements" />
-    <link rel="stylesheet" href="assets/css/main.css" />
-    <!-- Add Tariff Calculator CSS -->
-    <link rel="stylesheet" href="path/to/tariff.css" />
+    <meta name="description" content="University Selector">
+    <meta name="keywords" content="university, selector, grades, entry requirements">
+    <!-- Link to main CSS -->
+    <link rel="stylesheet" href="assets/css/main.css">
+    <!-- Link to Tariff Calculator CSS -->
+    <link rel="stylesheet" href="path/to/tariff.css">
 </head>
 <body class="is-preload">
     <!-- Wrapper -->
     <div id="wrapper">
-        <!-- Intro -->
+        <!-- Intro Section -->
         <section class="intro">
             <header>
                 <h1>University Selector</h1>
@@ -80,21 +81,23 @@
             </header>
             <div class="content">
                 <div id="tariff-calculator-container">
-                    <!-- Tariff Calculator HTML -->
+                    <!-- Tariff Calculator HTML will be dynamically inserted here -->
                 </div>
             </div>
         </section>
     </div>
 
-    <!-- Scripts -->
-    <script src="assets/js/jquery.min.js"></script>
+    <!-- jQuery Library -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- Main JS Scripts -->
     <script src="assets/js/jquery.scrolly.min.js"></script>
     <script src="assets/js/browser.min.js"></script>
     <script src="assets/js/breakpoints.min.js"></script>
     <script src="assets/js/util.js"></script>
     <script src="assets/js/main.js"></script>
-    <!-- Add Tariff Calculator JS -->
+    <!-- Tariff Calculator JS -->
     <script src="path/to/tariff.js"></script>
+
     <script>
         document.getElementById('university-form').addEventListener('submit', function(event) {
             event.preventDefault();
@@ -118,7 +121,7 @@
         // Initialize Tariff Calculator
         document.addEventListener('DOMContentLoaded', function() {
             // Assuming the tariff.js initializes the calculator in the container with ID 'tariff-calculator-container'
-            initializeTariffCalculator('#tariff-calculator-container');
+            $('#tariff-calculator-container').tariffLookup();
         });
     </script>
 </body>
