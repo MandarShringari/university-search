@@ -1,20 +1,17 @@
 <!DOCTYPE HTML>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>University Selector</title>
-    <meta name="description" content="University Selector">
-    <meta name="keywords" content="university, selector, grades, entry requirements">
-    <!-- Link to main CSS -->
-    <link rel="stylesheet" href="assets/css/main.css">
-    <!-- Link to Tariff Calculator CSS -->
-    <link rel="stylesheet" href="/mnt/data/tariff.css">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+    <meta name="description" content="University Selector" />
+    <meta name="keywords" content="university, selector, grades, entry requirements" />
+    <link rel="stylesheet" href="assets/css/main.css" />
 </head>
 <body class="is-preload">
     <!-- Wrapper -->
     <div id="wrapper">
-        <!-- Intro Section -->
+        <!-- Intro -->
         <section class="intro">
             <header>
                 <h1>University Selector</h1>
@@ -36,6 +33,7 @@
                         <div class="field half">
                             <label for="university-name">University Name</label>
                             <input type="text" name="university-name" id="university-name" required />
+                            <button type="button" id="search-university">Search</button>
                         </div>
                         <div class="field half">
                             <label for="grades">Grades</label>
@@ -50,6 +48,7 @@
                         <li><input type="submit" value="Add University" class="primary" /></li>
                     </ul>
                 </form>
+                <div id="university-info"></div>
             </div>
         </section>
 
@@ -65,6 +64,7 @@
                             <th>University</th>
                             <th>Grades</th>
                             <th>Entry Requirements</th>
+                            <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -73,31 +73,15 @@
                 </table>
             </div>
         </section>
-
-        <!-- Tariff Calculator Section -->
-        <section>
-            <header>
-                <h2>UCAS Tariff Calculator</h2>
-            </header>
-            <div class="content">
-                <div id="tariff-calculator-container">
-                    <!-- Tariff Calculator HTML will be dynamically inserted here -->
-                </div>
-            </div>
-        </section>
     </div>
 
-    <!-- jQuery Library -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <!-- Main JS Scripts -->
+    <!-- Scripts -->
+    <script src="assets/js/jquery.min.js"></script>
     <script src="assets/js/jquery.scrolly.min.js"></script>
     <script src="assets/js/browser.min.js"></script>
     <script src="assets/js/breakpoints.min.js"></script>
     <script src="assets/js/util.js"></script>
     <script src="assets/js/main.js"></script>
-    <!-- Tariff Calculator JS -->
-    <script src="/mnt/data/tariff.js"></script>
-
     <script>
         document.getElementById('university-form').addEventListener('submit', function(event) {
             event.preventDefault();
@@ -109,7 +93,12 @@
 
             // Create new row
             const newRow = document.createElement('tr');
-            newRow.innerHTML = `<td>${universityName}</td><td>${grades}</td><td>${entryRequirements}</td>`;
+            newRow.innerHTML = `
+                <td>${universityName}</td>
+                <td>${grades}</td>
+                <td>${entryRequirements}</td>
+                <td><button class="remove-button">Remove</button></td>
+            `;
 
             // Add row to table
             document.querySelector('#university-table tbody').appendChild(newRow);
@@ -118,17 +107,49 @@
             document.getElementById('university-form').reset();
         });
 
-        // Initialize Tariff Calculator
-        document.addEventListener('DOMContentLoaded', function() {
-            console.log('DOMContentLoaded event fired');
-            if (typeof $.fn.tariffLookup === 'function') {
-                console.log('tariffLookup function is defined');
-                $('#tariff-calculator-container').tariffLookup();
-            } else {
-                console.error('tariffLookup function is not defined');
+        // Event delegation for remove buttons
+        document.querySelector('#university-table tbody').addEventListener('click', function(event) {
+            if (event.target.classList.contains('remove-button')) {
+                event.target.closest('tr').remove();
             }
+        });
+
+        document.getElementById('search-university').addEventListener('click', function() {
+            const universityName = document.getElementById('university-name').value;
+            const universityInfoDiv = document.getElementById('university-info');
+            universityInfoDiv.innerHTML = '<p>Searching...</p>';
+
+            const corsProxy = 'https://api.allorigins.win/get?url=';
+            const apiUrl = `http://universities.hipolabs.com/search?name=${encodeURIComponent(universityName)}`;
+
+            fetch(corsProxy + encodeURIComponent(apiUrl))
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok ' + response.statusText);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    universityInfoDiv.innerHTML = '';
+
+                    const parsedData = JSON.parse(data.contents);
+
+                    if (parsedData.length > 0) {
+                        const university = parsedData[0];
+                        universityInfoDiv.innerHTML = `
+                            <h3>${university.name}</h3>
+                            <p>Country: ${university.country}</p>
+                            <p>Website: <a href="${university.web_pages[0]}" target="_blank">${university.web_pages[0]}</a></p>
+                        `;
+                    } else {
+                        universityInfoDiv.innerHTML = '<p>No university found.</p>';
+                    }
+                })
+                .catch(error => {
+                    console.error('Error fetching university data:', error);
+                    universityInfoDiv.innerHTML = `<p>Error fetching university data: ${error.message}</p>`;
+                });
         });
     </script>
 </body>
 </html>
-
