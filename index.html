@@ -119,7 +119,10 @@
             const universityInfoDiv = document.getElementById('university-info');
             universityInfoDiv.innerHTML = '<p>Searching...</p>';
 
-            fetch(`http://universities.hipolabs.com/search?name=${encodeURIComponent(universityName)}`)
+            const corsProxy = 'https://cors-anywhere.herokuapp.com/';
+            const apiUrl = `http://universities.hipolabs.com/search?name=${encodeURIComponent(universityName)}`;
+
+            fetch(corsProxy + apiUrl)
                 .then(response => {
                     if (!response.ok) {
                         throw new Error('Network response was not ok ' + response.statusText);
