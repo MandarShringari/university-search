@@ -116,10 +116,17 @@
 
         document.getElementById('search-university').addEventListener('click', function() {
             const universityName = document.getElementById('university-name').value;
-            fetch(`http://universities.hipolabs.com/search?name=${universityName}`)
-                .then(response => response.json())
+            const universityInfoDiv = document.getElementById('university-info');
+            universityInfoDiv.innerHTML = '<p>Searching...</p>';
+
+            fetch(`http://universities.hipolabs.com/search?name=${encodeURIComponent(universityName)}`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok ' + response.statusText);
+                    }
+                    return response.json();
+                })
                 .then(data => {
-                    const universityInfoDiv = document.getElementById('university-info');
                     universityInfoDiv.innerHTML = '';
 
                     if (data.length > 0) {
@@ -135,7 +142,7 @@
                 })
                 .catch(error => {
                     console.error('Error fetching university data:', error);
-                    document.getElementById('university-info').innerHTML = '<p>Error fetching university data.</p>';
+                    universityInfoDiv.innerHTML = `<p>Error fetching university data: ${error.message}</p>`;
                 });
         });
     </script>
