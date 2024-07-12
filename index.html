@@ -1,129 +1,103 @@
 <!DOCTYPE HTML>
-<!--
-    Paradigm Shift by HTML5 UP
-    html5up.net | @ajlkn
-    Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
--->
 <html>
-    <head>
-        <title>Paradigm Shift by HTML5 UP</title>
-        <meta charset="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
-        <meta name="description" content="" />
-        <meta name="keywords" content="" />
-        <link rel="stylesheet" href="assets/css/main.css" />
-    </head>
-    <body class="is-preload">
+<head>
+    <title>University Selector</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+    <meta name="description" content="University Selector" />
+    <meta name="keywords" content="university, selector, grades, entry requirements" />
+    <link rel="stylesheet" href="assets/css/main.css" />
+</head>
+<body class="is-preload">
+    <!-- Wrapper -->
+    <div id="wrapper">
+        <!-- Intro -->
+        <section class="intro">
+            <header>
+                <h1>University Selector</h1>
+                <p>Enter university details and view the list</p>
+                <ul class="actions">
+                    <li><a href="#form-section" class="arrow scrolly"><span class="label">Next</span></a></li>
+                </ul>
+            </header>
+        </section>
 
-        <!-- Wrapper -->
-            <div id="wrapper">
-
-                <!-- Intro -->
-                    <section class="intro">
-                        <header>
-                            <h1>Paradigm Shift</h1>
-                            <p>A free responsive site template designed by <a href="https://twitter.com/ajlkn">@ajlkn</a> / <a href="https://html5up.net">HTML5 UP</a></p>
-                            <ul class="actions">
-                                <li><a href="#first" class="arrow scrolly"><span class="label">Next</span></a></li>
-                            </ul>
-                        </header>
-                        <div class="content">
-                            <span class="image fill" data-position="center"><img src="images/pic01.jpg" alt="" /></span>
+        <!-- Form Section -->
+        <section id="form-section">
+            <header>
+                <h2>Add a University</h2>
+            </header>
+            <div class="content">
+                <form id="university-form">
+                    <div class="fields">
+                        <div class="field half">
+                            <label for="university-name">University Name</label>
+                            <input type="text" name="university-name" id="university-name" required />
                         </div>
-                    </section>
-
-                <!-- Section: University -->
-                    <section id="first">
-                        <header>
-                            <h2>Magna sed nullam nisl adipiscing</h2>
-                        </header>
-                        <div class="content">
-                            <p><strong>Lorem ipsum dolor</strong> sit amet consectetur adipiscing elit. Duis dapibus rutrum facilisis. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Etiam tristique libero eu nibh porttitor amet fermentum. Nullam venenatis erat id vehicula ultrices sed ultricies condimentum. Magna sed etiam consequat, et lorem adipiscing sed nulla. Volutpat nisl et tempus et dolor libero, feugiat magna tempus, sed et lorem adipiscing.</p>
-                            <span class="image main"><img src="images/pic02.jpg" alt="" /></span>
-                            <button onclick="removeUniversity()">Remove University</button>
+                        <div class="field half">
+                            <label for="grades">Grades</label>
+                            <input type="text" name="grades" id="grades" required />
                         </div>
-                    </section>
-
-                <!-- Section -->
-                    <section>
-                        <header>
-                            <h2>Feugiat consequat tempus ultrices</h2>
-                        </header>
-                        <div class="content">
-                            <p><strong>Etiam tristique libero</strong> eu nibh porttitor amet fermentum. Nullam venenatis erat id vehicula ultrices sed ultricies condimentum.</p>
-                            <ul class="feature-icons">
-                                <li class="icon solid fa-laptop">Consequat tempus</li>
-                                <li class="icon solid fa-bolt">Etiam adipiscing</li>
-                                <li class="icon solid fa-signal">Libero nullam</li>
-                                <li class="icon solid fa-cog">Blandit condimentum</li>
-                                <li class="icon solid fa-map-marker-alt">Lorem ipsum dolor</li>
-                                <li class="icon solid fa-code">Nibh amet venenatis</li>
-                            </ul>
-                            <p>Vehicula ultrices sed ultricies condimentum. Magna sed etiam consequat, et lorem adipiscing sed nulla. Volutpat nisl et tempus et dolor libero, feugiat magna tempus, sed et lorem adipiscing.</p>
+                        <div class="field">
+                            <label for="entry-requirements">Entry Requirements</label>
+                            <textarea name="entry-requirements" id="entry-requirements" rows="4" required></textarea>
                         </div>
-                    </section>
+                    </div>
+                    <ul class="actions">
+                        <li><input type="submit" value="Add University" class="primary" /></li>
+                    </ul>
+                </form>
+            </div>
+        </section>
 
-                <!-- Section -->
-                    <section>
-                        <header>
-                            <h2>Ultrices erat magna sed condimentum</h2>
-                        </header>
-                        <div class="content">
-                            <p><strong>Integer mollis egestas</strong> nam maximus erat id euismod egestas. Pellentesque sapien ac quam. Lorem ipsum dolor sit nullam.</p>
+        <!-- Display Section -->
+        <section>
+            <header>
+                <h2>University List</h2>
+            </header>
+            <div class="content">
+                <table id="university-table">
+                    <thead>
+                        <tr>
+                            <th>University</th>
+                            <th>Grades</th>
+                            <th>Entry Requirements</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Dynamic content will be inserted here -->
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </div>
 
-                            <!-- Section -->
-                                <section>
-                                    <header>
-                                        <h3>Erat aliquam</h3>
-                                        <p>Vehicula ultrices dolor amet ultricies et condimentum. Magna sed etiam consequat, et lorem adipiscing sed dolor sit amet, consectetur amet do eiusmod tempor incididunt  ipsum suspendisse ultrices gravida.</p>
-                                    </header>
-                                    <div class="content">
-                                        <div class="gallery">
-                                            <a href="images/gallery/fulls/01.jpg" class="landscape"><img src="images/gallery/thumbs/01.jpg" alt="" /></a>
-                                            <a href="images/gallery/fulls/02.jpg"><img src="images/gallery/thumbs/02.jpg" alt="" /></a>
-                                            <a href="images/gallery/fulls/03.jpg"><img src="images/gallery/thumbs/03.jpg" alt="" /></a>
-                                            <a href="images/gallery/fulls/04.jpg" class="landscape"><img src="images/gallery/thumbs/04.jpg" alt="" /></a>
-                                        </div>
-                                    </div>
-                                </section>
+    <!-- Scripts -->
+    <script src="assets/js/jquery.min.js"></script>
+    <script src="assets/js/jquery.scrolly.min.js"></script>
+    <script src="assets/js/browser.min.js"></script>
+    <script src="assets/js/breakpoints.min.js"></script>
+    <script src="assets/js/util.js"></script>
+    <script src="assets/js/main.js"></script>
+    <script>
+        document.getElementById('university-form').addEventListener('submit', function(event) {
+            event.preventDefault();
 
-                            <!-- Section -->
-                                <section>
-                                    <header>
-                                        <h3>Nisl consequat</h3>
-                                        <p>Aenean ornare velit lacus, ac varius enim ullamcorper eu. Proin aliquam sed facilisis ante interdum congue. Integer mollis, nisl amet convallis, porttitor magna ullamcorper, amet mauris. Ut magna finibus nisi nec lacinia ipsum maximus.</p>
-                                    </header>
-                                    <div class="content">
-                                        <div class="gallery">
-                                            <a href="images/gallery/fulls/05.jpg" class="landscape"><img src="images/gallery/thumbs/05.jpg" alt="" /></a>
-                                            <a href="images/gallery/fulls/06.jpg"><img src="images/gallery/thumbs/06.jpg" alt="" /></a>
-                                            <a href="images/gallery/fulls/07.jpg"><img src="images/gallery/thumbs/07.jpg" alt="" /></a>
-                                        </div>
-                                    </div>
-                                </section>
+            // Get form values
+            const universityName = document.getElementById('university-name').value;
+            const grades = document.getElementById('grades').value;
+            const entryRequirements = document.getElementById('entry-requirements').value;
 
-                            <!-- Section -->
-                                <section>
-                                    <header>
-                                        <h3>Lorem gravida</h3>
-                                        <p>Proin aliquam facilisis ante interdum. Sed nulla amet lorem feugiat tempus aenean ornare velit lacus, ac varius sed enim lorem ullamcorper dolore.  ac varius enim lorem ullamcorper dolore. Proin aliquam facilisis.</p>
-                                    </header>
-                                    <div class="content">
-                                        <div class="gallery">
-                                            <a href="images/gallery/fulls/08.jpg" class="portrait"><img src="images/gallery/thumbs/08.jpg" alt="" /></a>
-                                            <a href="images/gallery/fulls/09.jpg" class="portrait"><img src="images/gallery/thumbs/09.jpg" alt="" /></a>
-                                            <a href="images/gallery/fulls/10.jpg" class="landscape"><img src="images/gallery/thumbs/10.jpg" alt="" /></a>
-                                        </div>
-                                    </div>
-                                </section>
+            // Create new row
+            const newRow = document.createElement('tr');
+            newRow.innerHTML = `<td>${universityName}</td><td>${grades}</td><td>${entryRequirements}</td>`;
 
-                        </div>
-                    </section>
+            // Add row to table
+            document.querySelector('#university-table tbody').appendChild(newRow);
 
-                <!-- Section -->
-                    <section>
-                        <header>
-                            <h2>Duis sed adpiscing veroeros amet</h2>
-                        </header>
-                        <div class="content">
-                            <p><strong>Pro
+            // Clear form
+            document.getElementById('university-form').reset();
+        });
+    </script>
+</body>
+</html>
