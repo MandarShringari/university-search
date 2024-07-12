@@ -140,6 +140,10 @@
     // Initialise the plugin.
     base.init(element);
   }
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="tariff.js"></script>
+
+
 
 })(jQuery);
 
