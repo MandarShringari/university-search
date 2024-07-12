@@ -62,6 +62,7 @@
                             <th>University</th>
                             <th>Grades</th>
                             <th>Entry Requirements</th>
+                            <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -90,13 +91,25 @@
 
             // Create new row
             const newRow = document.createElement('tr');
-            newRow.innerHTML = `<td>${universityName}</td><td>${grades}</td><td>${entryRequirements}</td>`;
+            newRow.innerHTML = `
+                <td>${universityName}</td>
+                <td>${grades}</td>
+                <td>${entryRequirements}</td>
+                <td><button class="remove-button">Remove</button></td>
+            `;
 
             // Add row to table
             document.querySelector('#university-table tbody').appendChild(newRow);
 
             // Clear form
             document.getElementById('university-form').reset();
+        });
+
+        // Event delegation for remove buttons
+        document.querySelector('#university-table tbody').addEventListener('click', function(event) {
+            if (event.target.classList.contains('remove-button')) {
+                event.target.closest('tr').remove();
+            }
         });
     </script>
 </body>
