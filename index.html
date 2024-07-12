@@ -9,7 +9,7 @@
     <!-- Link to main CSS -->
     <link rel="stylesheet" href="assets/css/main.css">
     <!-- Link to Tariff Calculator CSS -->
-    <link rel="stylesheet" href="path/to/tariff.css">
+    <link rel="stylesheet" href="/mnt/data/tariff.css">
 </head>
 <body class="is-preload">
     <!-- Wrapper -->
@@ -96,7 +96,7 @@
     <script src="assets/js/util.js"></script>
     <script src="assets/js/main.js"></script>
     <!-- Tariff Calculator JS -->
-    <script src="path/to/tariff.js"></script>
+    <script src="/mnt/data/tariff.js"></script>
 
     <script>
         document.getElementById('university-form').addEventListener('submit', function(event) {
@@ -120,7 +120,6 @@
 
         // Initialize Tariff Calculator
         document.addEventListener('DOMContentLoaded', function() {
-            // Assuming the tariff.js initializes the calculator in the container with ID 'tariff-calculator-container'
             $('#tariff-calculator-container').tariffLookup();
         });
     </script>
