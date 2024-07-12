@@ -120,8 +120,15 @@
 
         // Initialize Tariff Calculator
         document.addEventListener('DOMContentLoaded', function() {
-            $('#tariff-calculator-container').tariffLookup();
+            console.log('DOMContentLoaded event fired');
+            if (typeof $.fn.tariffLookup === 'function') {
+                console.log('tariffLookup function is defined');
+                $('#tariff-calculator-container').tariffLookup();
+            } else {
+                console.error('tariffLookup function is not defined');
+            }
         });
     </script>
 </body>
 </html>
+
