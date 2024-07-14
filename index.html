@@ -9,9 +9,7 @@
     <link rel="stylesheet" href="assets/css/main.css" />
 </head>
 <body class="is-preload">
-    <!-- Wrapper -->
     <div id="wrapper">
-        <!-- Intro -->
         <section class="intro">
             <header>
                 <h1>University Selector</h1>
@@ -21,8 +19,6 @@
                 </ul>
             </header>
         </section>
-
-        <!-- Form Section -->
         <section id="form-section">
             <header>
                 <h2>Add a University</h2>
@@ -51,8 +47,6 @@
                 <div id="university-info"></div>
             </div>
         </section>
-
-        <!-- Display Section -->
         <section>
             <header>
                 <h2>University List</h2>
@@ -74,8 +68,6 @@
             </div>
         </section>
     </div>
-
-    <!-- Scripts -->
     <script src="assets/js/jquery.min.js"></script>
     <script src="assets/js/jquery.scrolly.min.js"></script>
     <script src="assets/js/browser.min.js"></script>
@@ -107,7 +99,6 @@
             document.getElementById('university-form').reset();
         });
 
-        // Event delegation for remove buttons
         document.querySelector('#university-table tbody').addEventListener('click', function(event) {
             if (event.target.classList.contains('remove-button')) {
                 event.target.closest('tr').remove();
@@ -119,30 +110,26 @@
             const universityInfoDiv = document.getElementById('university-info');
             universityInfoDiv.innerHTML = '<p>Searching...</p>';
 
-            const corsProxy = 'https://api.allorigins.win/get?url=';
-            const apiUrl = `http://universities.hipolabs.com/search?name=${encodeURIComponent(universityName)}`;
+            const apiUrl = '/search';
+            const requestData = { url: `https://digital.ucas.com/coursedisplay/courses?name=${encodeURIComponent(universityName)}` };
 
-            fetch(corsProxy + encodeURIComponent(apiUrl))
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Network response was not ok ' + response.statusText);
-                    }
-                    return response.json();
-                })
+            fetch(apiUrl, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(requestData)
+            })
+                .then(response => response.json())
                 .then(data => {
-                    universityInfoDiv.innerHTML = '';
-
-                    const parsedData = JSON.parse(data.contents);
-
-                    if (parsedData.length > 0) {
-                        const university = parsedData[0];
-                        universityInfoDiv.innerHTML = `
-                            <h3>${university.name}</h3>
-                            <p>Country: ${university.country}</p>
-                            <p>Website: <a href="${university.web_pages[0]}" target="_blank">${university.web_pages[0]}</a></p>
-                        `;
+                    if (data.error) {
+                        universityInfoDiv.innerHTML = `<p>Error: ${data.error}</p>`;
                     } else {
-                        universityInfoDiv.innerHTML = '<p>No university found.</p>';
+                        universityInfoDiv.innerHTML = `
+                            <h3>${data.title}</h3>
+                            <p>Summary: ${data.summary}</p>
+                            <p>Entry Requirements: ${data.entry_requirements}</p>
+                        `;
                     }
                 })
                 .catch(error => {
