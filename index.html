@@ -1,142 +1,65 @@
-<!DOCTYPE HTML>
-<html>
-<head>
-    <title>University Selector</title>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
-    <meta name="description" content="University Selector" />
-    <meta name="keywords" content="university, selector, grades, entry requirements" />
-    <link rel="stylesheet" href="assets/css/main.css" />
-</head>
-<body class="is-preload">
-    <div id="wrapper">
-        <section class="intro">
-            <header>
-                <h1>University Selector</h1>
-                <p>Enter university details and view the list</p>
-                <ul class="actions">
-                    <li><a href="#form-section" class="arrow scrolly"><span class="label">Next</span></a></li>
-                </ul>
-            </header>
-        </section>
-        <section id="form-section">
-            <header>
-                <h2>Add a University</h2>
-            </header>
-            <div class="content">
-                <form id="university-form">
-                    <div class="fields">
-                        <div class="field half">
-                            <label for="university-name">University Name</label>
-                            <input type="text" name="university-name" id="university-name" required />
-                            <button type="button" id="search-university">Search</button>
-                        </div>
-                        <div class="field half">
-                            <label for="grades">Grades</label>
-                            <input type="text" name="grades" id="grades" required />
-                        </div>
-                        <div class="field">
-                            <label for="entry-requirements">Entry Requirements</label>
-                            <textarea name="entry-requirements" id="entry-requirements" rows="4" required></textarea>
-                        </div>
-                    </div>
-                    <ul class="actions">
-                        <li><input type="submit" value="Add University" class="primary" /></li>
-                    </ul>
-                </form>
-                <div id="university-info"></div>
+<!-- Form Section -->
+<section id="form-section">
+    <header>
+        <h2>Add a University</h2>
+    </header>
+    <div class="content">
+        <form id="university-form">
+            <div class="fields">
+                <div class="field half">
+                    <label for="university-name">University Name</label>
+                    <input type="text" name="university-name" id="university-name" required />
+                    <button type="button" id="search-university">Search</button>
+                </div>
+                <div class="field half">
+                    <label for="grades">Grades</label>
+                    <input type="text" name="grades" id="grades" required />
+                </div>
+                <div class="field">
+                    <label for="entry-requirements">Entry Requirements</label>
+                    <textarea name="entry-requirements" id="entry-requirements" rows="4" required></textarea>
+                </div>
             </div>
-        </section>
-        <section>
-            <header>
-                <h2>University List</h2>
-            </header>
-            <div class="content">
-                <table id="university-table">
-                    <thead>
-                        <tr>
-                            <th>University</th>
-                            <th>Grades</th>
-                            <th>Entry Requirements</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <!-- Dynamic content will be inserted here -->
-                    </tbody>
-                </table>
-            </div>
-        </section>
+            <ul class="actions">
+                <li><input type="submit" value="Add University" class="primary" /></li>
+            </ul>
+        </form>
+        <div id="university-info"></div>
     </div>
-    <script src="assets/js/jquery.min.js"></script>
-    <script src="assets/js/jquery.scrolly.min.js"></script>
-    <script src="assets/js/browser.min.js"></script>
-    <script src="assets/js/breakpoints.min.js"></script>
-    <script src="assets/js/util.js"></script>
-    <script src="assets/js/main.js"></script>
-    <script>
-        document.getElementById('university-form').addEventListener('submit', function(event) {
-            event.preventDefault();
+</section>
 
-            // Get form values
-            const universityName = document.getElementById('university-name').value;
-            const grades = document.getElementById('grades').value;
-            const entryRequirements = document.getElementById('entry-requirements').value;
+<script>
+    document.getElementById('search-university').addEventListener('click', function() {
+        const universityName = document.getElementById('university-name').value;
+        const universityInfoDiv = document.getElementById('university-info');
+        universityInfoDiv.innerHTML = '<p>Searching...</p>';
 
-            // Create new row
-            const newRow = document.createElement('tr');
-            newRow.innerHTML = `
-                <td>${universityName}</td>
-                <td>${grades}</td>
-                <td>${entryRequirements}</td>
-                <td><button class="remove-button">Remove</button></td>
-            `;
+        const apiUrl = '/search';
+        const requestData = { university_name: universityName };
 
-            // Add row to table
-            document.querySelector('#university-table tbody').appendChild(newRow);
-
-            // Clear form
-            document.getElementById('university-form').reset();
-        });
-
-        document.querySelector('#university-table tbody').addEventListener('click', function(event) {
-            if (event.target.classList.contains('remove-button')) {
-                event.target.closest('tr').remove();
+        fetch(apiUrl, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(requestData)
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
             }
+            return response.json();
+        })
+        .then(data => {
+            universityInfoDiv.innerHTML = `
+                <h3>${data.title}</h3>
+                <p>Summary: ${data.summary}</p>
+                <p>Entry Requirements: ${data.entry_requirements}</p>
+            `;
+        })
+        .catch(error => {
+            console.error('Error fetching university data:', error);
+            universityInfoDiv.innerHTML = `<p>Error fetching university data: ${error.message}</p>`;
         });
-
-        document.getElementById('search-university').addEventListener('click', function() {
-            const universityName = document.getElementById('university-name').value;
-            const universityInfoDiv = document.getElementById('university-info');
-            universityInfoDiv.innerHTML = '<p>Searching...</p>';
-
-            const apiUrl = '/search';
-            const requestData = { url: `https://digital.ucas.com/coursedisplay/courses?name=${encodeURIComponent(universityName)}` };
-
-            fetch(apiUrl, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(requestData)
-            })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.error) {
-                        universityInfoDiv.innerHTML = `<p>Error: ${data.error}</p>`;
-                    } else {
-                        universityInfoDiv.innerHTML = `
-                            <h3>${data.title}</h3>
-                            <p>Summary: ${data.summary}</p>
-                            <p>Entry Requirements: ${data.entry_requirements}</p>
-                        `;
-                    }
-                })
-                .catch(error => {
-                    console.error('Error fetching university data:', error);
-                    universityInfoDiv.innerHTML = `<p>Error fetching university data: ${error.message}</p>`;
-                });
-        });
-    </script>
-</body>
-</html>
+    });
+</script>
